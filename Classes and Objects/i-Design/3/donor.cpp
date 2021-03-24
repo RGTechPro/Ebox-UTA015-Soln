@@ -17,8 +17,8 @@ class Donor
     {
       cout<<"Name :"<<name<<endl;
       cout<<"Age :"<<age<<endl;
-      cout<<"height :"<<fixed << setprecision(1)<<height<<endl;
-      cout<<"weight :"<<fixed << setprecision(1)<<weight<<endl;
+      cout<<"height :"<<height<<endl;
+      cout<<"weight :"<<weight<<endl;
       cout<<"Gender :"<<gender<<endl;
       cout<<"Blood Group :"<<bloodGroup<<endl;
     }
