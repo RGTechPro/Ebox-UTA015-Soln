@@ -1,16 +1,16 @@
-#include <iostream>
-#include<string>
 #include<stdio.h>
 #include "Donor.cpp"
 using namespace std;
 int main()
-{	  
-    Donor A;
+{   
+	
     int i,n;
     cout<<"Enter the number of donors:"<<endl;
     cin>>n;
-    for(i=1;i<=n;i++){
-        cout<<"Enter the donor details"<<i<<endl;
+	Donor donors[n];
+    for(i=0;i<n;i++){
+        Donor A;
+        cout<<"Enter the donor details"<<i+1<<endl;
         cout<<"Enter the Name :"<<endl;
         cin>>A.name;
         cout<<"Enter the Age :"<<endl;
@@ -23,13 +23,15 @@ int main()
         cin>>A.gender;
         cout<<"Enter the Blood Group :"<<endl;
         cin>>A.bloodGroup;
-        
-        
-    
-        cout<<"Donor details in the hospital database :"<<endl;
-        cout<<"Donor"<<i<<endl; 
-        A.display();
+		
+		donors[i] = A;
     }
+	
+	cout<<"Donor details in the hospital database :"<<endl;
+	for(i=0;i<n;i++){
+		cout<<"Donor"<<i<<endl; 
+        A.display();
+	}
+	
     return 0;
 }
-

@@ -106,6 +106,7 @@ namespace Ares
                         this.Dispatcher.Invoke(() =>
                         {
                             mInject.Content = "Start Injector";
+                            isInjectActive = false;
                             mInject.Background = new SolidColorBrush(Colors.OrangeRed);
                         });
                     }

@@ -10,7 +10,7 @@
         <ui:SimpleStackPanel x:Name="cont" Spacing="5">
             <TextBlock Text="Enter Your Code" Style="{StaticResource HeaderTextBlockStyle}" 
                    FontFamily="Comic Sans MS" FontWeight="Normal" HorizontalAlignment="Center" FontSize="40"/>
-            <TextBox x:Name="ResponseTextBox"  Width="{Binding ActualWidth, ElementName=cont}" Height="300"/>
+            <TextBox x:Name="ResponseTextBox" TextWrapping="Wrap" AcceptsReturn="True"  Width="{Binding ActualWidth, ElementName=cont}" Height="300"/>
             <Button x:Name="subdial" Content="Submit" HorizontalAlignment="Center" 
                 Style="{StaticResource AccentButtonStyle}" Width="{Binding ActualWidth, ElementName=cont}" Height="60"
                 FontSize="30" FontFamily="OCR A Extended" Click="OKButton_Click" />
