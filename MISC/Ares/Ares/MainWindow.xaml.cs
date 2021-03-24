@@ -27,6 +27,8 @@ namespace Ares
     public partial class MainWindow : Window
     {
         public bool isRunning;
+        public bool isInjectActive;
+        private string injectionCode = "";
         ProxyServer proxyServer = new ProxyServer();
         ExplicitProxyEndPoint explicitEndPoint;
 
@@ -34,7 +36,7 @@ namespace Ares
         {
             InitializeComponent();
             changeStopRunning();
-
+            isInjectActive = false;
             // locally trust root certificate used by this proxy 
 
             // optionally set the Certificate Engine
@@ -91,19 +93,35 @@ namespace Ares
                 string bodyString = await e.GetRequestBodyAsString();
                 if (bodyString.Contains("content"))
                 {
-                    string content = bodyString.Substring(bodyString.LastIndexOf("content=") + 8);
-                    string decoded = HttpUtility.UrlDecode(content);
-                    
-                    Log(decoded);
-                    Log("Found Save With Name " + fname + " Content Length "+decoded.Length+" Successfully Copied To Your Clipboard!");
-                    clipboardSetText(decoded);
+                    if (isInjectActive){
+                        if (injectionCode == "" || injectionCode.Length == 0){
+                            Log("Injection Code Empty? Wtf");
+                        }
+                        else{
+                            string encoded = HttpUtility.UrlEncode(injectionCode);
+                            string body = "content=" + encoded;
+                            e.SetRequestBodyString(body);
+                            Log("Found Save With Name " + fname + " Content Length " + encoded.Length + " Successfully Injected The Code!");
+                        }
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            mInject.Content = "Start Injector";
+                            mInject.Background = new SolidColorBrush(Colors.OrangeRed);
+                        });
+                    }
+                    else{
+                        string content = bodyString.Substring(bodyString.LastIndexOf("content=") + 8);
+                        string decoded = HttpUtility.UrlDecode(content);
+
+                        Log(decoded);
+                        Log("Found Save With Name " + fname + " Content Length " + decoded.Length + " Successfully Copied To Your Clipboard!");
+                        clipboardSetText(decoded);
+                    }
                 }
                 else
                     Log("Found Save With Name "+fname+" But Failed To Parse For Data :((");
 
             }
-
-                Console.WriteLine(e.HttpClient.Request.Url);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -186,5 +204,31 @@ namespace Ares
         {
             System.Windows.Clipboard.SetText(inTextToCopy);
         }
+
+        private void Injector_Click(object sender, RoutedEventArgs e)
+        {
+            if (!proxyServer.ProxyRunning) {
+                Log("You need proxy server running to use this function!!");
+                return;
+            }
+            if (isInjectActive){
+                mInject.Content = "Start Injector";
+                mInject.Background = new SolidColorBrush(Colors.OrangeRed);
+                
+            }
+            else{
+                var dialog = new MyDialog();
+                if (dialog.ShowDialog() == true)
+                {
+                    injectionCode = dialog.ResponseText;
+                }
+                mInject.Content = "Stop Injector";
+                mInject.Background = new SolidColorBrush(Colors.Green);
+            }
+
+            isInjectActive = !isInjectActive;
+        }
     }
+
+    
 }
